@@ -1,5 +1,6 @@
 {
   "expo": {
+    "entryPoint": "./src/App.tsx",
     "name": "Coindash",
     "slug": "Coindash",
     "version": "1.0.0",
