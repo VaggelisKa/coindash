@@ -1,6 +1,8 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 
 import WelcomePage from 'pages/welcome-page.components';
 import Dashboard from 'pages/dashboard.component';
@@ -8,11 +10,15 @@ import Settings from 'pages/settings.component';
 
 const Tab = createBottomTabNavigator();
 
-
 const TabsFooter: React.FC = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="Home">
+      <Tab.Navigator
+        sceneContainerStyle={{backgroundColor: '#010e2c'}}
+        initialRouteName="Home"
+        screenOptions={screenOptions}
+        tabBarOptions={tabBarOptions}
+      >
         <Tab.Screen
           name="Home"
           component={WelcomePage}
@@ -32,5 +38,38 @@ const TabsFooter: React.FC = () => {
     </NavigationContainer>
   );
 };
+
+
+const screenOptions = ({ route }: any) => ({
+  tabBarIcon: ({ focused, color }: any) => {
+    let iconName;
+
+    if (route.name === 'Home') {
+      iconName = focused
+      ? 'home'
+      : 'home-outline';
+    } else if (route.name === 'Dashboard') {
+      iconName = focused
+        ? 'bar-chart'
+        : 'bar-chart-outline';
+    } else {
+      iconName = focused
+        ? 'settings'
+        : 'settings-outline';
+    }
+
+    return <Ionicons name={iconName as 'key'} size={30} color={color} />;
+  }
+});
+
+const tabBarOptions = {
+  activeTintColor: 'tomato',
+  showLabel: false,
+  inactiveTintColor: '#fff',
+  style: {
+    backgroundColor: '#010e2c'
+  }
+};
+
 
 export default TabsFooter;
