@@ -1,8 +1,12 @@
+import ConfirmButton from 'components/confirm-button.component';
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 const Settings: React.FC = () => (
-  <Text>Settings</Text>
+  <View>
+    <Text>Settings</Text>
+    <ConfirmButton />
+  </View>
 );
 
 export default Settings;

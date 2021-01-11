@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { Image, Container, Title } from 'styles/header.styles';
 
 const Header = () => (
