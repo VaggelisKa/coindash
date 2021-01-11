@@ -15,7 +15,7 @@ export const Image = styled.Image`
 
 export const Title = styled.Text`
   color: #fff;
-  font-size: 2.3rem;
+  font-size: 2.1rem;
   font-weight: bold;
   font-style: italic;
   align-self: center;

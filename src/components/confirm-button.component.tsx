@@ -7,7 +7,7 @@ const ConfirmButton: React.FC = () => {
 
   return (
     <View>
-      sasa
+      <Button title="Apply" onPress={() => confirmSettings('hi')} />
     </View>
   );
 };

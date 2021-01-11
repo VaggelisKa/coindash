@@ -1,4 +1,8 @@
+import { Coin } from 'models/models';
 import React, { createContext, useEffect, useState } from 'react';
+
+const cc = require('cryptocompare');
+cc.setApiKey(process.env.CRYPTOCOMPARE_API_KEY);
 
 interface Props {
   children?: React.ReactChild | React.ReactChild[]
@@ -8,18 +12,39 @@ type ConfirmSettings = (settings: string) => void;
 
 interface AppContextValues {
   savedSettings: { settings: string, firstVisit: boolean }
+  coinList: Coin[],
   confirmSettings: ConfirmSettings
 }
 
 const initialState: AppContextValues = {
-  savedSettings: { settings: '', firstVisit: false },
+  savedSettings: { settings: '', firstVisit: true },
+  coinList: [],
   confirmSettings: () => {}
 };
 
 export const AppContext = createContext<AppContextValues>(initialState);
 
 const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
-  const [savedSettings, setSavedSettings] = useState({settings: '', firstVisit: false});
+  const [savedSettings, setSavedSettings] = useState({settings: '', firstVisit: true});
+  const [coinList, setCoinList] = useState<Coin[]>([]);
+
+  const getCoinData = async () => {
+    try {
+      const coinData = await cc.coinList();
+      if (coinData) {
+        const { Data } = coinData;
+        setCoinList(Data);
+      }
+    } catch (error) {
+      // Set an error state maybe?
+    }
+  };
+
+  useEffect(() => {
+    getCoinData();
+  }, []);
+
+  console.log(coinList);
 
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
@@ -31,11 +56,12 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
       });
     } else {
       setSavedSettings({
-        settings: coindashData,
+        settings: coindashData.settings,
         firstVisit: false
       });
     }
   }, []);
+
 
   const confirmSettings: ConfirmSettings = (settings: string) => {
     if (!settings) return;
@@ -48,6 +74,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     <AppContext.Provider
       value={{
         savedSettings,
+        coinList,
         confirmSettings
       }}
     >
