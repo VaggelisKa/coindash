@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { Text } from 'react-native';
 
 import { AppContext } from 'context/AppContextProvider';
 import Settings from './settings.component';
+import Spinner from 'components/spinner.component';
 
 const cc = require('cryptocompare');
 cc.setApiKey(process.env.CRYPTOCOMPARE_API_KEY);
@@ -31,7 +31,7 @@ const SettingsContainer: React.FC = () => {
 
 
   return (
-    loading ? <Text>Loading coins</Text> : <Settings />
+    loading ? <Spinner /> : <Settings />
   );
 };
 

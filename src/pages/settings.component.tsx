@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
+
 import ConfirmButton from 'components/confirm-button.component';
+import { Container } from 'styles/settings.styles';
 
 import { AppContext } from 'context/AppContextProvider';
 
@@ -10,10 +12,10 @@ const Settings: React.FC = () => {
   console.log(coinList);
 
   return (
-    <View>
+    <Container>
       <Text>Settings</Text>
       <ConfirmButton />
-    </View>
+    </Container>
   );
 };
 
