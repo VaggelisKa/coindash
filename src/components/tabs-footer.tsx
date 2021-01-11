@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import WelcomePage from 'pages/welcome-page.components';
 import Dashboard from 'pages/dashboard.component';
-import Settings from 'pages/settings.component';
+import SettingsContainer from 'pages/settings.container';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +31,7 @@ const TabsFooter: React.FC = () => {
         />
         <Tab.Screen
           name="Settings"
-          component={Settings}
+          component={SettingsContainer}
           options={{title: 'Settings'}}
         />
       </Tab.Navigator>

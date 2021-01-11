@@ -1,50 +1,40 @@
 import { Coin } from 'models/models';
 import React, { createContext, useEffect, useState } from 'react';
 
-const cc = require('cryptocompare');
-cc.setApiKey(process.env.CRYPTOCOMPARE_API_KEY);
-
 interface Props {
   children?: React.ReactChild | React.ReactChild[]
 }
 
 type ConfirmSettings = (settings: string) => void;
+type SetCoins = (coins: Coin[] | null) => void;
+type SetIsLoading = (isLoading: boolean) => void;
 
 interface AppContextValues {
   savedSettings: { settings: string, firstVisit: boolean }
-  coinList: Coin[],
+  coinList: Coin[] | null
+  loading: boolean
+
   confirmSettings: ConfirmSettings
+  setCoins: SetCoins
+  setIsLoading: SetIsLoading
 }
 
 const initialState: AppContextValues = {
   savedSettings: { settings: '', firstVisit: true },
   coinList: [],
-  confirmSettings: () => {}
+  loading: false,
+
+  confirmSettings: () => {},
+  setCoins: () => {},
+  setIsLoading: () => {}
 };
 
 export const AppContext = createContext<AppContextValues>(initialState);
 
 const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [savedSettings, setSavedSettings] = useState({settings: '', firstVisit: true});
-  const [coinList, setCoinList] = useState<Coin[]>([]);
-
-  const getCoinData = async () => {
-    try {
-      const coinData = await cc.coinList();
-      if (coinData) {
-        const { Data } = coinData;
-        setCoinList(Data);
-      }
-    } catch (error) {
-      // Set an error state maybe?
-    }
-  };
-
-  useEffect(() => {
-    getCoinData();
-  }, []);
-
-  console.log(coinList);
+  const [coinList, setCoinList] = useState<Coin[] | null>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
@@ -62,6 +52,8 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     }
   }, []);
 
+  const setCoins = (coins: Coin[] | null) => setCoinList(coins);
+  const setIsLoading = (isLoading: boolean) => setLoading(isLoading);
 
   const confirmSettings: ConfirmSettings = (settings: string) => {
     if (!settings) return;
@@ -75,7 +67,10 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
       value={{
         savedSettings,
         coinList,
-        confirmSettings
+        loading,
+        confirmSettings,
+        setCoins,
+        setIsLoading
       }}
     >
       {children}
