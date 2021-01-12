@@ -16,13 +16,25 @@ const CoinOverview: React.FC<Props> = ({ item }: Props) => {
 const styles = StyleSheet.create({
   itemStyles: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    marginTop: 10,
-    overflow: 'hidden'
+    margin: 13,
+    padding: 30,
+    paddingLeft: 5,
+    overflow: 'hidden',
+    backgroundColor: '#06215a',
+    shadowColor: '#121d5b',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.50,
+    shadowRadius: 12.35,
+    elevation: 19,
   },
   textStyles: {
-    color: '#fff'
+    color: '#fff',
+    fontWeight: 'bold'
   }
 });
 

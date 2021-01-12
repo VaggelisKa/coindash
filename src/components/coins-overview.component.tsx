@@ -11,7 +11,7 @@ const CoinsOverview: React.FC = () => {
       data={Object.keys(coinList)}
       style={styles.container}
       renderItem={({item}) => <CoinOverview item={item} />}
-      numColumns={3}
+      numColumns={2}
       keyExtractor={(_, index) => 'key' + index}
       disableVirtualization={true}
     />

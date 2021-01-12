@@ -52,7 +52,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     }
   }, []);
 
-  const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList, setCoinList]);
+  const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList]);
   const setIsLoading = (isLoading: boolean) => setLoading(isLoading);
 
   const confirmSettings: ConfirmSettings = (settings: string) => {
