@@ -6,5 +6,6 @@ export interface Coin {
   ImageUrl: string;
   isTrading: boolean;
   TotalCoinsMined: number;
+  Symbol: string;
 }
 

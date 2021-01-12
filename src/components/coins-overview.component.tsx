@@ -1,14 +1,20 @@
-import { AppContext } from 'context/AppContextProvider';
 import React, { useContext } from 'react';
+import { AppContext } from 'context/AppContextProvider';
+import { Coin } from 'models/models';
+
 import { FlatList, StyleSheet } from 'react-native';
 import CoinOverview from './coin-overview.component';
 
 const CoinsOverview: React.FC = () => {
   const { coinList } = useContext(AppContext);
 
+  const getCoinsToDisplay = (coinList: {[id: string]: Coin}) => {
+    return Object.values(coinList).slice(0, 100);
+  };
+
   return (
     <FlatList
-      data={Object.keys(coinList)}
+      data={getCoinsToDisplay(coinList)}
       style={styles.container}
       renderItem={({item}) => <CoinOverview item={item} />}
       numColumns={2}

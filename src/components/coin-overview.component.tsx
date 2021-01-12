@@ -1,27 +1,31 @@
+import { Coin } from 'models/models';
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 interface Props {
-  item: string
+  item: Coin
 }
 
 const CoinOverview: React.FC<Props> = ({ item }: Props) => {
+  const {
+    CoinName,
+    Symbol
+  } = item;
+
   return (
-    <View style={styles.itemStyles}>
-      <Text style={styles.textStyles}>{item}</Text>
+    <View style={styles.container}>
+      <Text style={styles.coinName}>{CoinName}</Text>
+      <Text style={styles.coinSymbol}>{Symbol}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  itemStyles: {
+  container: {
     flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
     margin: 13,
-    padding: 30,
-    paddingLeft: 5,
-    overflow: 'hidden',
+    paddingVertical: 30,
+    paddingHorizontal: 5,
     backgroundColor: '#06215a',
     shadowColor: '#121d5b',
     shadowOffset: {
@@ -32,9 +36,27 @@ const styles = StyleSheet.create({
     shadowRadius: 12.35,
     elevation: 19,
   },
-  textStyles: {
+  textContainer: {
+    flex: 1,
+    alignSelf: 'flex-start',
+  },
+  textContainer2: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    justifyContent: 'space-between'
+  },
+  coinName: {
+    flex: 1,
     color: '#fff',
-    fontWeight: 'bold'
+    fontSize: 13,
+    fontWeight: 'bold',
+  },
+  coinSymbol: {
+    position: 'absolute',
+    flex: 1,
+    color: '#fff',
+    fontSize: 12,
+    alignSelf: 'flex-end',
   }
 });
 
