@@ -1,22 +1,24 @@
-import React, { useContext } from 'react';
-import { Text } from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
 import ConfirmButton from 'components/confirm-button.component';
-import { Container } from 'styles/settings.styles';
-
-import { AppContext } from 'context/AppContextProvider';
+import CoinsOverview from 'components/coins-overview.component';
 
 const Settings: React.FC = () => {
-  const { coinList } = useContext(AppContext);
-
-  console.log(coinList);
-
   return (
-    <Container>
-      <Text>Settings</Text>
+    <View style={styles.viewStyles}>
       <ConfirmButton />
-    </Container>
+      <CoinsOverview />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  viewStyles: {
+    flex: 1,
+    justifyContent: 'center',
+    height: 100
+  }
+});
 
 export default Settings;

@@ -1,17 +1,17 @@
 import { Coin } from 'models/models';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 
 interface Props {
   children?: React.ReactChild | React.ReactChild[]
 }
 
 type ConfirmSettings = (settings: string) => void;
-type SetCoins = (coins: Coin[] | null) => void;
+type SetCoins = (coins: {[id: string]: Coin}) => void;
 type SetIsLoading = (isLoading: boolean) => void;
 
 interface AppContextValues {
   savedSettings: { settings: string, firstVisit: boolean }
-  coinList: Coin[] | null
+  coinList: {[id: string]: Coin}
   loading: boolean
 
   confirmSettings: ConfirmSettings
@@ -21,7 +21,7 @@ interface AppContextValues {
 
 const initialState: AppContextValues = {
   savedSettings: { settings: '', firstVisit: true },
-  coinList: [],
+  coinList: {},
   loading: false,
 
   confirmSettings: () => {},
@@ -33,7 +33,7 @@ export const AppContext = createContext<AppContextValues>(initialState);
 
 const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [savedSettings, setSavedSettings] = useState({settings: '', firstVisit: true});
-  const [coinList, setCoinList] = useState<Coin[] | null>([]);
+  const [coinList, setCoinList] = useState<{[id: string]: Coin}>({});
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     }
   }, []);
 
-  const setCoins = (coins: Coin[] | null) => setCoinList(coins);
+  const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList, setCoinList]);
   const setIsLoading = (isLoading: boolean) => setLoading(isLoading);
 
   const confirmSettings: ConfirmSettings = (settings: string) => {
