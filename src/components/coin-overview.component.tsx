@@ -1,6 +1,6 @@
 import { Coin } from 'models/models';
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 interface Props {
   item: Coin
@@ -9,13 +9,15 @@ interface Props {
 const CoinOverview: React.FC<Props> = ({ item }: Props) => {
   const {
     CoinName,
-    Symbol
+    Symbol,
+    ImageUrl
   } = item;
 
   return (
     <View style={styles.container}>
       <Text style={styles.coinName}>{CoinName}</Text>
       <Text style={styles.coinSymbol}>{Symbol}</Text>
+      <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
     </View>
   );
 };
@@ -24,7 +26,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 13,
-    paddingVertical: 30,
+    paddingBottom: 25,
+    paddingTop: 5,
     paddingHorizontal: 5,
     backgroundColor: '#06215a',
     shadowColor: '#121d5b',
@@ -36,19 +39,9 @@ const styles = StyleSheet.create({
     shadowRadius: 12.35,
     elevation: 19,
   },
-  textContainer: {
-    flex: 1,
-    alignSelf: 'flex-start',
-  },
-  textContainer2: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    justifyContent: 'space-between'
-  },
   coinName: {
-    flex: 1,
     color: '#fff',
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   coinSymbol: {
@@ -57,6 +50,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 12,
     alignSelf: 'flex-end',
+  },
+  image: {
+    marginTop: 15,
+    height: 70,
+    width: 70,
+    borderRadius: 70/2
   }
 });
 

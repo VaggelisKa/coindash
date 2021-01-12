@@ -8,7 +8,7 @@ const ConfirmButton: React.FC = () => {
   return (
     <View style={styles.viewStyles}>
       <Button
-        title="Apply"
+        title="Confirm Favorites"
         color="#f7941b"
         onPress={() => confirmSettings('hi')}
       />
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   viewStyles: {
     flex: 1,
     justifyContent: 'center',
-    marginHorizontal: 100,
+    marginHorizontal: 95,
     marginBottom: -100
   },
   buttonStyles: {
