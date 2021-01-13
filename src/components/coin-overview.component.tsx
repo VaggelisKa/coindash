@@ -10,20 +10,19 @@ interface Props {
 }
 
 const CoinOverview: React.FC<Props> = ({ item, topSection }: Props) => {
-  const { setFavoriteCoins, removeFavoriteCoin } = useContext(AppContext);
+  const { setFavoriteCoins, removeFavoriteCoin, isInFavorites } = useContext(AppContext);
   const {
     CoinName,
     Symbol,
     ImageUrl
   } = item;
 
+
   const onPress = (coin: Coin) => {
     if (topSection) {
       removeFavoriteCoin(coin);
     } else {
-      const coinArr: Coin[] = [];
-      coinArr.push(coin);
-      setFavoriteCoins(coinArr);
+      setFavoriteCoins(coin);
     }
   };
 
@@ -31,12 +30,12 @@ const CoinOverview: React.FC<Props> = ({ item, topSection }: Props) => {
     <TouchableOpacity onPress={() => onPress(item)} style={styles.container}>
       <View style={topSection ? styles.topSection : styles.bottomContainer}>
         {
-          topSection ? null : <Text style={styles.coinSymbol}>{Symbol}</Text>
+        topSection ? null : <Text style={styles.coinSymbol}>{Symbol}</Text>
         }
         <Text style={styles.coinName}>{CoinName}</Text>
         {
-          ImageUrl ? <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
-                    : <Spinner />
+        ImageUrl ? <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
+                  : <Spinner />
         }
       </View>
     </TouchableOpacity>
@@ -95,4 +94,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default CoinOverview;
+export default React.memo(CoinOverview);

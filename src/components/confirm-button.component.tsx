@@ -10,7 +10,7 @@ const ConfirmButton: React.FC = () => {
       <Button
         title="Confirm Favorites"
         color="#f7941b"
-        onPress={() => confirmSettings('hi')}
+        onPress={() => confirmSettings()}
       />
     </View>
   );
