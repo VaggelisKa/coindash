@@ -19,12 +19,16 @@ const ConfirmButton: React.FC = () => {
 const styles = StyleSheet.create({
   viewStyles: {
     flex: 1,
+    marginHorizontal: 100,
     justifyContent: 'center',
-    marginHorizontal: 95,
-    marginBottom: -100
+    alignItems: 'center',
+    position: 'absolute',
+    paddingBottom: 150
   },
   buttonStyles: {
     color: 'red',
+    alignSelf: 'center',
+    position: 'absolute',
   }
 });
 

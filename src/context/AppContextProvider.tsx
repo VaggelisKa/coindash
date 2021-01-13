@@ -12,7 +12,8 @@ type SetIsLoading = (isLoading: boolean) => void;
 interface AppContextValues {
   savedSettings: { settings: string, firstVisit: boolean }
   coinList: {[id: string]: Coin}
-  loading: boolean
+  loading: boolean,
+  favorites: string[],
 
   confirmSettings: ConfirmSettings
   setCoins: SetCoins
@@ -23,6 +24,7 @@ const initialState: AppContextValues = {
   savedSettings: { settings: '', firstVisit: true },
   coinList: {},
   loading: false,
+  favorites: [],
 
   confirmSettings: () => {},
   setCoins: () => {},
@@ -35,6 +37,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [savedSettings, setSavedSettings] = useState({settings: '', firstVisit: true});
   const [coinList, setCoinList] = useState<{[id: string]: Coin}>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
@@ -68,6 +71,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         savedSettings,
         coinList,
         loading,
+        favorites,
         confirmSettings,
         setCoins,
         setIsLoading

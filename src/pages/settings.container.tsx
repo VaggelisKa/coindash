@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 
 import { AppContext } from 'context/AppContextProvider';
 import Settings from './settings.component';
@@ -11,7 +11,7 @@ const SettingsContainer: React.FC = () => {
   const { setCoins, setIsLoading, loading } = useContext(AppContext);
 
 
-  const getCoinData = async () => {
+  const getCoinData = useCallback(async () => {
     try {
       setIsLoading(true);
 
@@ -24,14 +24,10 @@ const SettingsContainer: React.FC = () => {
     } catch (error) {
       // Set an error state maybe?
     }
-  };
+  }, []);
 
   useEffect(() => {
     getCoinData();
-
-    return () => {
-
-    };
   }, []);
 
 

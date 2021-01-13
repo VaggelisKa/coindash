@@ -7,8 +7,9 @@ import CoinsOverview from 'components/coins-overview.component';
 const Settings: React.FC = () => {
   return (
     <View style={styles.viewStyles}>
+      <CoinsOverview topSection={true} />
       <ConfirmButton />
-      <CoinsOverview />
+      <CoinsOverview topSection={false} />
     </View>
   );
 };
@@ -17,7 +18,6 @@ const styles = StyleSheet.create({
   viewStyles: {
     flex: 1,
     justifyContent: 'center',
-    height: 100
   }
 });
 
