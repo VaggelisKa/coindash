@@ -10,16 +10,16 @@ interface Props {
 }
 
 const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
-  const { coinList } = useContext(AppContext);
+  const { coinList, favorites } = useContext(AppContext);
 
   const getCoinsToDisplay = (coinList: {[id: string]: Coin}) => {
-    return Object.values(coinList).slice(0, topSection ? 10 : 100);
+    return topSection ? favorites : Object.values(coinList).slice(0, 100);
   };
 
   return (
     <>
       <Text style={styles.textStyles}>
-        { topSection ? 'Your favorites' : 'Add to favorites' }
+        { topSection ? (favorites.length > 0 ? 'Your favorites, touch to remove' : 'No favorites') : 'Touch to add favorites' }
       </Text>
       <FlatList
         data={getCoinsToDisplay(coinList)}
@@ -39,7 +39,6 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    aspectRatio: 2,
     marginVertical: 20,
   },
   topSectionContainer: {
@@ -49,6 +48,7 @@ const styles = StyleSheet.create({
   },
   textStyles: {
     flex: 1,
+    flexDirection: 'column',
     alignSelf: 'center',
     color: '#fff',
     fontWeight: 'bold',

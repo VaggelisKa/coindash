@@ -1,6 +1,7 @@
+import { AppContext } from 'context/AppContextProvider';
 import { Coin } from 'models/models';
-import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 import Spinner from './spinner.component';
 
 interface Props {
@@ -9,23 +10,36 @@ interface Props {
 }
 
 const CoinOverview: React.FC<Props> = ({ item, topSection }: Props) => {
+  const { setFavoriteCoins, removeFavoriteCoin } = useContext(AppContext);
   const {
     CoinName,
     Symbol,
     ImageUrl
   } = item;
 
+  const onPress = (coin: Coin) => {
+    if (topSection) {
+      removeFavoriteCoin(coin);
+    } else {
+      const coinArr: Coin[] = [];
+      coinArr.push(coin);
+      setFavoriteCoins(coinArr);
+    }
+  };
+
   return (
-    <View style={topSection ? styles.topSection : styles.container}>
-      <Text style={styles.coinName}>{CoinName}</Text>
-      {
-        topSection ? null : <Text style={styles.coinSymbol}>{Symbol}</Text>
-      }
-      {
-       ImageUrl ? <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
-                : <Spinner />
-      }
-    </View>
+    <TouchableOpacity onPress={() => onPress(item)} style={styles.container}>
+      <View style={topSection ? styles.topSection : styles.bottomContainer}>
+        {
+          topSection ? null : <Text style={styles.coinSymbol}>{Symbol}</Text>
+        }
+        <Text style={styles.coinName}>{CoinName}</Text>
+        {
+          ImageUrl ? <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
+                    : <Spinner />
+        }
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -47,6 +61,10 @@ const sharedStyles = {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 2,
+    width: '100%'
+  },
+  bottomContainer: {
     ...sharedStyles as Object,
     alignItems: 'flex-start',
     paddingBottom: 20

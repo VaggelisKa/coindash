@@ -1,50 +1,57 @@
 import { Coin } from 'models/models';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
+import _ from 'lodash';
 
 interface Props {
   children?: React.ReactChild | React.ReactChild[]
 }
 
-type ConfirmSettings = (settings: string) => void;
+type ConfirmSettings = (settings: Coin[]) => void;
 type SetCoins = (coins: {[id: string]: Coin}) => void;
 type SetIsLoading = (isLoading: boolean) => void;
+type SetFavoriteCoins = (coins: Coin[]) => void;
+type RemoveFavoriteCoin = (coin: Coin) => void;
 
 interface AppContextValues {
-  savedSettings: { settings: string, firstVisit: boolean }
+  savedSettings: { settings: Coin[], firstVisit: boolean }
   coinList: {[id: string]: Coin}
   loading: boolean,
-  favorites: string[],
+  favorites: Coin[],
 
   confirmSettings: ConfirmSettings
   setCoins: SetCoins
   setIsLoading: SetIsLoading
+  setFavoriteCoins: SetFavoriteCoins
+  removeFavoriteCoin: RemoveFavoriteCoin
 }
 
 const initialState: AppContextValues = {
-  savedSettings: { settings: '', firstVisit: true },
+  savedSettings: { settings: [], firstVisit: true },
   coinList: {},
   loading: false,
   favorites: [],
 
   confirmSettings: () => {},
   setCoins: () => {},
-  setIsLoading: () => {}
+  setIsLoading: () => {},
+  setFavoriteCoins: () => {},
+  removeFavoriteCoin: () => {}
 };
 
 export const AppContext = createContext<AppContextValues>(initialState);
 
 const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
-  const [savedSettings, setSavedSettings] = useState({settings: '', firstVisit: true});
+  const [savedSettings, setSavedSettings] = useState<{settings: Coin[], firstVisit: boolean}>({settings: [], firstVisit: true});
   const [coinList, setCoinList] = useState<{[id: string]: Coin}>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const [favorites, setFavorites] = useState<Coin[]>([]);
 
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
 
     if (!coindashData) {
       setSavedSettings({
-        settings: '',
+        settings: [],
         firstVisit: true
       });
     } else {
@@ -52,13 +59,20 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         settings: coindashData.settings,
         firstVisit: false
       });
+      setFavorites(savedSettings.settings);
     }
   }, []);
 
   const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList]);
-  const setIsLoading = (isLoading: boolean) => setLoading(isLoading);
+  const setIsLoading: SetIsLoading = (isLoading: boolean) => setLoading(isLoading);
+  const setFavoriteCoins: SetFavoriteCoins = useCallback((coins: Coin[]) => setFavorites(favorites.concat(coins)), [favorites]);
 
-  const confirmSettings: ConfirmSettings = (settings: string) => {
+  const removeFavoriteCoin: RemoveFavoriteCoin = useCallback((coin: Coin) => {
+    const updatedFavorites: Coin[] = _.pull([...favorites], coin);
+    setFavorites(updatedFavorites);
+  }, [favorites]);
+
+  const confirmSettings: ConfirmSettings = (settings: Coin[]) => {
     if (!settings) return;
 
     localStorage.setItem('coindash', JSON.stringify({settings}));
@@ -74,7 +88,9 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         favorites,
         confirmSettings,
         setCoins,
-        setIsLoading
+        setIsLoading,
+        setFavoriteCoins,
+        removeFavoriteCoin
       }}
     >
       {children}
