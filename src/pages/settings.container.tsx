@@ -22,7 +22,7 @@ const SettingsContainer: React.FC = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      // Set an error state maybe?
+      // Set an error context maybe?
     }
   }, []);
 

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import _ from 'lodash';
 import { AppContext } from 'context/AppContextProvider';
 import { Coin } from 'models/models';
 
@@ -13,7 +14,7 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
   const { coinList, favorites } = useContext(AppContext);
 
   const getCoinsToDisplay = (coinList: {[id: string]: Coin}) => {
-    return topSection ? favorites : Object.values(coinList).slice(0, 100).filter((c) => !favorites.includes(c));
+    return topSection ? favorites : Object.values(coinList).slice(0, 100).filter((c) => !_.some(favorites, c));
   };
 
   return (

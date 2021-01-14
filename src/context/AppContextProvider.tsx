@@ -64,7 +64,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
       });
     }
 
-    setFavorites([...coindashData] || []);
+    setFavorites(coindashData || []);
   }, []);
 
 
@@ -72,8 +72,8 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   const setIsLoading: SetIsLoading = (isLoading: boolean) => setLoading(isLoading);
 
   const setFavoriteCoins: SetFavoriteCoins = (coin: Coin) => {
-    console.log(favorites);
-    if (_.includes(favorites, coin)) {
+    if (_.some(favorites, coin)) {
+      // Maybe display alert?
       return;
     }
 
@@ -90,7 +90,6 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     if (favorites.length <= 0) return;
 
     localStorage.setItem('coindash', JSON.stringify([...favorites]));
-    setSavedSettings({settings: favorites, firstVisit: false});
   };
 
   return (

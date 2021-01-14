@@ -1,9 +1,8 @@
 import { AppContext } from 'context/AppContextProvider';
-import _ from 'lodash';
 import { Coin } from 'models/models';
 import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
-import Spinner from './spinner.component';
+import Spinner from 'components/spinner.component';
 
 interface Props {
   item: Coin,
@@ -31,12 +30,12 @@ const CoinOverview: React.FC<Props> = ({ item, topSection }: Props) => {
     <TouchableOpacity onPress={() => onPress(item)} style={styles.container}>
       <View style={topSection ? styles.topSection : styles.bottomContainer}>
         {
-        topSection ? null : <Text style={styles.coinSymbol}>{Symbol}</Text>
+          topSection ? null : <Text style={styles.coinSymbol}>{Symbol}</Text>
         }
         <Text style={styles.coinName}>{CoinName}</Text>
         {
-        ImageUrl ? <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
-                  : <Spinner />
+          ImageUrl ? <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
+                    : <Spinner />
         }
       </View>
     </TouchableOpacity>
@@ -95,4 +94,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default React.memo(CoinOverview);
+export default CoinOverview;
