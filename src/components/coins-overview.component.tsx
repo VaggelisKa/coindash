@@ -13,7 +13,7 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
   const { coinList, favorites } = useContext(AppContext);
 
   const getCoinsToDisplay = (coinList: {[id: string]: Coin}) => {
-    return topSection ? favorites : Object.values(coinList).slice(0, 100);
+    return topSection ? favorites : Object.values(coinList).slice(0, 100).filter((c) => !favorites.includes(c));
   };
 
   return (

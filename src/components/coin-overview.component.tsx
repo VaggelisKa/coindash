@@ -1,4 +1,5 @@
 import { AppContext } from 'context/AppContextProvider';
+import _ from 'lodash';
 import { Coin } from 'models/models';
 import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const CoinOverview: React.FC<Props> = ({ item, topSection }: Props) => {
-  const { setFavoriteCoins, removeFavoriteCoin, isInFavorites } = useContext(AppContext);
+  const { setFavoriteCoins, removeFavoriteCoin } = useContext(AppContext);
   const {
     CoinName,
     Symbol,

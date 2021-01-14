@@ -62,22 +62,23 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         settings: [coindashData],
         firstVisit: false
       });
-      setFavorites(coindashData);
     }
+
+    setFavorites([...coindashData] || []);
   }, []);
 
 
   const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList]);
   const setIsLoading: SetIsLoading = (isLoading: boolean) => setLoading(isLoading);
 
-  const setFavoriteCoins: SetFavoriteCoins = useCallback((coin: Coin) => {
+  const setFavoriteCoins: SetFavoriteCoins = (coin: Coin) => {
+    console.log(favorites);
     if (_.includes(favorites, coin)) {
-      setIsInFavorites(true);
       return;
     }
 
     setFavorites(_.concat(favorites, coin));
-  }, [favorites]);
+  };
 
   const removeFavoriteCoin: RemoveFavoriteCoin = useCallback((coin: Coin) => {
     const updatedFavorites: Coin[] = _.pull([...favorites], coin);
