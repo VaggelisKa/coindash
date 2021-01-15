@@ -35,7 +35,8 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
         renderItem={({item}) => <CoinOverview item={item} topSection={topSection} />}
         numColumns={topSection ? undefined : 2}
         keyExtractor={(_, index) => 'key' + index}
-        disableVirtualization={true}
+        disableVirtualization
+        removeClippedSubviews
         horizontal={topSection}
         showsHorizontalScrollIndicator={false}
       />
