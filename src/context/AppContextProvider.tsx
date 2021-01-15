@@ -11,6 +11,7 @@ type SetCoins = (coins: {[id: string]: Coin}) => void;
 type SetIsLoading = (isLoading: boolean) => void;
 type SetFavoriteCoins = (coin: Coin) => void;
 type RemoveFavoriteCoin = (coin: Coin) => void;
+type CoinsFromSearch = (coins: {[id: string]: Coin}) => void;
 
 interface AppContextValues {
   savedSettings: { settings: Coin[], firstVisit: boolean }
@@ -18,12 +19,14 @@ interface AppContextValues {
   loading: boolean,
   favorites: Coin[],
   isInFavorites: boolean,
+  filteredCoins: {[id: string]: Coin}
 
   confirmSettings: ConfirmSettings
   setCoins: SetCoins
   setIsLoading: SetIsLoading
   setFavoriteCoins: SetFavoriteCoins
   removeFavoriteCoin: RemoveFavoriteCoin
+  coinsFromSearch: CoinsFromSearch
 }
 
 const initialState: AppContextValues = {
@@ -32,12 +35,14 @@ const initialState: AppContextValues = {
   loading: false,
   favorites: [],
   isInFavorites: false,
+  filteredCoins: {},
 
   confirmSettings: () => {},
   setCoins: () => {},
   setIsLoading: () => {},
   setFavoriteCoins: () => {},
-  removeFavoriteCoin: () => {}
+  removeFavoriteCoin: () => {},
+  coinsFromSearch: () => {}
 };
 
 export const AppContext = createContext<AppContextValues>(initialState);
@@ -48,6 +53,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<Coin[]>([]);
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
+  const [filteredCoins, setFilteredCoins] = useState<{[id: string]: Coin}>({});
 
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
@@ -86,6 +92,8 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     setIsInFavorites(false);
   }, [favorites]);
 
+  const coinsFromSearch: CoinsFromSearch = (coins: {[id: string]: Coin}) => setFilteredCoins(coins);
+
   const confirmSettings: ConfirmSettings = () => {
     if (favorites.length <= 0) return;
 
@@ -100,11 +108,13 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         loading,
         favorites,
         isInFavorites,
+        filteredCoins,
         confirmSettings,
         setCoins,
         setIsLoading,
         setFavoriteCoins,
-        removeFavoriteCoin
+        removeFavoriteCoin,
+        coinsFromSearch
       }}
     >
       {children}

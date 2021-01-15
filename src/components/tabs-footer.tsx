@@ -54,8 +54,8 @@ const screenOptions = ({ route }: any) => ({
         : 'bar-chart-outline';
     } else {
       iconName = focused
-        ? 'settings'
-        : 'settings-outline';
+        ? 'heart'
+        : 'heart-outline';
     }
 
     return <Ionicons name={iconName as 'key'} size={30} color={color} />;

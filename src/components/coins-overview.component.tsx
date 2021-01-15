@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import _ from 'lodash';
 import { AppContext } from 'context/AppContextProvider';
-import { Coin } from 'models/models';
 
 import { FlatList, StyleSheet, Text } from 'react-native';
 import CoinOverview from './coin-overview.component';
@@ -12,10 +11,16 @@ interface Props {
 }
 
 const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
-  const { coinList, favorites } = useContext(AppContext);
+  const { coinList, favorites, filteredCoins } = useContext(AppContext);
 
-  const getCoinsToDisplay = (coinList: {[id: string]: Coin}) => {
-    return topSection ? favorites : Object.values(coinList).slice(0, 100).filter((c) => !_.some(favorites, c));
+  const getBottomSectionCoins = useCallback(() => {
+    return Object.keys(filteredCoins).length > 1
+           ? Object.values(filteredCoins).filter((c) => !_.some(favorites, c))
+           : Object.values(coinList).filter((c) => !_.some(favorites, c));
+  }, [filteredCoins]);
+
+  const getCoinsToDisplay = () => {
+    return topSection ? favorites : ( filteredCoins ? getBottomSectionCoins() : Object.values(coinList));
   };
 
   return (
@@ -25,7 +30,7 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
       </Text>
       {topSection ? null : <Search />}
       <FlatList
-        data={getCoinsToDisplay(coinList)}
+        data={getCoinsToDisplay()}
         style={topSection ? styles.topSectionContainer : styles.container}
         renderItem={({item}) => <CoinOverview item={item} topSection={topSection} />}
         numColumns={topSection ? undefined : 2}
