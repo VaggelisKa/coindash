@@ -5,6 +5,7 @@ import { Coin } from 'models/models';
 
 import { FlatList, StyleSheet, Text } from 'react-native';
 import CoinOverview from './coin-overview.component';
+import Search from './search.component';
 
 interface Props {
   topSection: boolean
@@ -22,6 +23,7 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
       <Text style={styles.textStyles}>
         { topSection ? (favorites.length > 0 ? 'Your favorites, touch to remove' : 'No favorites') : 'Touch to add favorites' }
       </Text>
+      {topSection ? null : <Search />}
       <FlatList
         data={getCoinsToDisplay(coinList)}
         style={topSection ? styles.topSectionContainer : styles.container}
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingTop: 40,
     fontSize: 16,
-    marginBottom: -200,
+    marginBottom: -180,
   }
 });
 

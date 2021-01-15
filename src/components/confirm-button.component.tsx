@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    paddingBottom: 150
+    paddingBottom: 190
   },
   buttonStyles: {
     color: 'red',
