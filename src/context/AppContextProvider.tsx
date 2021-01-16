@@ -1,4 +1,4 @@
-import { Coin } from 'models/models';
+import { Coin, PriceData, Prices } from 'models/models';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 import _ from 'lodash';
@@ -21,7 +21,8 @@ interface AppContextValues {
   loading: boolean,
   favorites: Coin[],
   isInFavorites: boolean,
-  filteredCoins: {[id: string]: Coin}
+  filteredCoins: {[id: string]: Coin},
+  prices: Prices[]
 
   confirmSettings: ConfirmSettings
   setCoins: SetCoins
@@ -38,6 +39,7 @@ const initialState: AppContextValues = {
   favorites: [],
   isInFavorites: false,
   filteredCoins: {},
+  prices: [],
 
   confirmSettings: () => {},
   setCoins: () => {},
@@ -51,18 +53,17 @@ export const AppContext = createContext<AppContextValues>(initialState);
 
 const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [savedSettings, setSavedSettings] = useStateWithCallbackLazy<{settings: Coin[], firstVisit: boolean}>({settings: [], firstVisit: true});
-
   const [coinList, setCoinList] = useState<{[id: string]: Coin}>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<Coin[]>([]);
   const [isInFavorites, setIsInFavorites] = useState<boolean>(false);
   const [filteredCoins, setFilteredCoins] = useState<{[id: string]: Coin}>({});
-  const [prices, setPrices] = useState({});
+  const [prices, setPrices] = useState<Prices[]>([]);
 
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
 
-    if (!coindashData) {
+    if (!Object.keys(coindashData)) {
       setSavedSettings({
         settings: [],
         firstVisit: true
@@ -71,15 +72,12 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
       setSavedSettings({
         settings: [coindashData],
         firstVisit: false
-      }, () => {});
+      }, () => {
+        getPrices(Object.values(coindashData));
+        setFavorites(Object.values(coindashData));
+      });
     }
-
-    setFavorites(coindashData || []);
   }, []);
-
-  useEffect(() => {
-    getPrices();
-  });
 
   const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList]);
   const setIsLoading: SetIsLoading = (isLoading: boolean) => setLoading(isLoading);
@@ -101,13 +99,15 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
 
   const coinsFromSearch: CoinsFromSearch = (coins: {[id: string]: Coin}) => setFilteredCoins(coins);
 
-  const getPrices = async () => {
+  const getPrices = async (favorites: Coin[]) => {
+    console.log(favorites);
     if (savedSettings.firstVisit) return;
 
     let pricesArr = await pricesAsync(favorites);
     pricesArr = pricesArr.filter(price => Object.keys(price).length);
-    console.log(pricesArr);
+    setPrices(pricesArr);
   };
+
 
   const confirmSettings: ConfirmSettings = () => {
     if (favorites.length <= 0) return;
@@ -117,7 +117,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
       settings: favorites,
       firstVisit: false
     }, () => {
-      getPrices();
+      getPrices(favorites);
     });
   };
 
@@ -130,6 +130,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         favorites,
         isInFavorites,
         filteredCoins,
+        prices,
         confirmSettings,
         setCoins,
         setIsLoading,

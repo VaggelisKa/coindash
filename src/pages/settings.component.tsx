@@ -4,11 +4,11 @@ import { View, StyleSheet } from 'react-native';
 import ConfirmButton from 'components/confirm-button.component';
 import CoinsOverview from 'components/coins-overview.component';
 
-const Settings: React.FC = () => {
+const Settings: React.FC = (props) => {
   return (
     <View style={styles.viewStyles}>
       <CoinsOverview topSection={true} />
-      <ConfirmButton />
+      <ConfirmButton {...props} />
       <CoinsOverview topSection={false} />
     </View>
   );

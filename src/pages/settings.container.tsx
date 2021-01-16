@@ -7,9 +7,8 @@ import Spinner from 'components/spinner.component';
 const cc = require('cryptocompare');
 cc.setApiKey('bc602bf27052c72e2ff02eef5c9b18881f12f22fa02fcf710fd5793626c27a86');
 
-const SettingsContainer: React.FC = () => {
+const SettingsContainer: React.FC = (props) => {
   const { setCoins, setIsLoading, loading } = useContext(AppContext);
-
 
   const getCoinData = useCallback(async () => {
     try {
@@ -32,7 +31,7 @@ const SettingsContainer: React.FC = () => {
 
 
   return (
-    loading ? <Spinner /> : <Settings />
+    loading ? <Spinner /> : <Settings {...props} />
   );
 };
 

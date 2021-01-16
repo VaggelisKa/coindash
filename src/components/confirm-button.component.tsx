@@ -1,8 +1,13 @@
 import React, { useContext } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import { AppContext } from 'context/AppContextProvider';
+import { NavigationProp } from '@react-navigation/native';
 
-const ConfirmButton: React.FC = () => {
+interface Props {
+  navigation: NavigationProp<any>
+}
+
+const ConfirmButton: React.FC<Props> = ({ navigation }: Props) => {
   const { confirmSettings } = useContext(AppContext);
 
   return (
@@ -10,7 +15,10 @@ const ConfirmButton: React.FC = () => {
       <Button
         title="Confirm Favorites"
         color="#f7941b"
-        onPress={() => confirmSettings()}
+        onPress={() => {
+          confirmSettings();
+          navigation.navigate('Dashboard');
+        }}
       />
     </View>
   );
