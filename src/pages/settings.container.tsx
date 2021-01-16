@@ -35,4 +35,4 @@ const SettingsContainer: React.FC = (props) => {
   );
 };
 
-export default React.memo(SettingsContainer);
+export default SettingsContainer;

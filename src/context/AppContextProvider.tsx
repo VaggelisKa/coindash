@@ -1,4 +1,4 @@
-import { Coin, PriceData, Prices } from 'models/models';
+import { Coin, Prices } from 'models/models';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 import _ from 'lodash';
@@ -14,6 +14,7 @@ type SetIsLoading = (isLoading: boolean) => void;
 type SetFavoriteCoins = (coin: Coin) => void;
 type RemoveFavoriteCoin = (coin: Coin) => void;
 type CoinsFromSearch = (coins: {[id: string]: Coin}) => void;
+type GetPrices = (favorites: Coin[]) => void
 
 interface AppContextValues {
   savedSettings: { settings: Coin[], firstVisit: boolean }
@@ -30,6 +31,7 @@ interface AppContextValues {
   setFavoriteCoins: SetFavoriteCoins
   removeFavoriteCoin: RemoveFavoriteCoin
   coinsFromSearch: CoinsFromSearch
+  getPrices: GetPrices
 }
 
 const initialState: AppContextValues = {
@@ -46,7 +48,8 @@ const initialState: AppContextValues = {
   setIsLoading: () => {},
   setFavoriteCoins: () => {},
   removeFavoriteCoin: () => {},
-  coinsFromSearch: () => {}
+  coinsFromSearch: () => {},
+  getPrices: async () => {}
 };
 
 export const AppContext = createContext<AppContextValues>(initialState);
@@ -63,18 +66,17 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
 
-    if (!Object.keys(coindashData)) {
+    if (Object.keys(coindashData || {}).length <= 0) {
       setSavedSettings({
         settings: [],
         firstVisit: true
-      }, () => {});
+      }, null);
     } else {
       setSavedSettings({
         settings: [coindashData],
         firstVisit: false
       }, () => {
-        getPrices(Object.values(coindashData));
-        setFavorites(Object.values(coindashData));
+        setFavorites(Object.values(coindashData || {}));
       });
     }
   }, []);
@@ -99,19 +101,21 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
 
   const coinsFromSearch: CoinsFromSearch = (coins: {[id: string]: Coin}) => setFilteredCoins(coins);
 
-  const getPrices = async (favorites: Coin[]) => {
-    console.log(favorites);
+  const getPrices: GetPrices = async (favorites: Coin[]) => {
     if (savedSettings.firstVisit) return;
+
+    setLoading(true);
 
     let pricesArr = await pricesAsync(favorites);
     pricesArr = pricesArr.filter(price => Object.keys(price).length);
     setPrices(pricesArr);
+    console.log(pricesArr);
+
+    setLoading(false);
   };
 
 
   const confirmSettings: ConfirmSettings = () => {
-    if (favorites.length <= 0) return;
-
     localStorage.setItem('coindash', JSON.stringify([...favorites]));
     setSavedSettings({
       settings: favorites,
@@ -136,7 +140,8 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         setIsLoading,
         setFavoriteCoins,
         removeFavoriteCoin,
-        coinsFromSearch
+        coinsFromSearch,
+        getPrices
       }}
     >
       {children}

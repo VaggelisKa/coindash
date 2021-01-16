@@ -8,12 +8,13 @@ export const pricesAsync = async (favorites: Coin[]) => {
   for (let i = 0; i < favorites.length; i++) {
     try {
       const priceData = await cc.priceFull(favorites[i].Name, 'EUR');
-      pricesData.push(priceData);
+      pricesData.push(priceData[favorites[i].Name]);
     } catch (error) {
       console.warn('Fetch price error ', error);
     }
   }
 
+  console.log(pricesData);
   return pricesData;
 };
 
