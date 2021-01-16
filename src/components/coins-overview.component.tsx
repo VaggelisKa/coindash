@@ -14,7 +14,7 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
   const { coinList, favorites, filteredCoins } = useContext(AppContext);
 
   const getBottomSectionCoins = useCallback(() => {
-    return Object.keys(filteredCoins).length > 1
+    return Object.keys(filteredCoins).length > 0
            ? Object.values(filteredCoins).filter((c) => !_.some(favorites, c))
            : Object.values(coinList).filter((c) => !_.some(favorites, c));
   }, [filteredCoins]);
