@@ -17,7 +17,7 @@ const CoinsOverview: React.FC<Props> = ({ topSection }: Props) => {
     return Object.keys(filteredCoins).length > 0
            ? Object.values(filteredCoins).filter((c) => !_.some(favorites, c))
            : Object.values(coinList).filter((c) => !_.some(favorites, c));
-  }, [filteredCoins]);
+  }, [filteredCoins, favorites]);
 
   const getCoinsToDisplay = () => {
     return topSection ? favorites : ( filteredCoins ? getBottomSectionCoins() : Object.values(coinList));

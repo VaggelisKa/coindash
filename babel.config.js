@@ -11,7 +11,8 @@ module.exports = function(api) {
             components: './src/components',
             pages: './src/pages',
             images: './src/images',
-            context: './src/context'
+            context: './src/context',
+            helpers: './src/helpers'
           }
         }
       ]

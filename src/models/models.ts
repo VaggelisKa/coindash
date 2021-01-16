@@ -1,4 +1,5 @@
 export interface Coin {
+  Name: string;
   CoinName: string;
   ContentCreatedOn: number;
   FullName: string;

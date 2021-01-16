@@ -29,7 +29,8 @@
     "react-native-screens": "~2.15.0",
     "react-native-svg": "^12.1.0",
     "react-native-web": "^0.14.10",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "use-state-with-callback": "^2.0.3"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
