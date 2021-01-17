@@ -5,13 +5,21 @@ import React, { useContext, useEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 const Dashboard: React.FC = () => {
-  const { savedSettings, favorites, getPrices, loading } = useContext(AppContext);
+  const {
+    savedSettings,
+    favorites,
+    getPrices,
+    loading,
+    selectedFavorite
+  } = useContext(AppContext);
+
   const { firstVisit } = savedSettings;
 
   useEffect(() => {
     getPrices(favorites);
   }, []);
 
+  console.log(selectedFavorite);
   return (
     firstVisit || favorites.length <= 0
       ?

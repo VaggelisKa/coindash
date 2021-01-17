@@ -1,7 +1,8 @@
 import { PriceData } from 'models/models';
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { sharedStyles } from 'components/coin-overview.component';
+import { AppContext } from 'context/AppContextProvider';
 
 interface Props {
   itemData: PriceData
@@ -10,15 +11,21 @@ interface Props {
 const numberFormat = (number: number) => +(number.toString()).slice(0, 5);
 
 const CoinPriceTile: React.FC<Props> = ({ itemData }: Props) => {
+  const { selectFavoriteCoin, favorites } = useContext(AppContext);
   const {
     PRICE,
     FROMSYMBOL,
     CHANGEPCT24HOUR
   } = itemData;
 
-  const handleTouch = (): void => {
-    console.log(PRICE);
-  };
+  const handleTouch = useCallback((): void => {
+    for (let i = 0; i < favorites.length; i++) {
+      if (favorites[i].Symbol === FROMSYMBOL) {
+        selectFavoriteCoin(favorites[i]);
+        return;
+      }
+    }
+  }, []);
 
   return (
     <TouchableOpacity style={{width: '100%', flex: 1}} onPress={handleTouch}>
@@ -32,7 +39,6 @@ const CoinPriceTile: React.FC<Props> = ({ itemData }: Props) => {
         </View>
       </View>
     </TouchableOpacity>
-
   );
 };
 
