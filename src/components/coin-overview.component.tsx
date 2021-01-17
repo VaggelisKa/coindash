@@ -2,7 +2,6 @@ import { AppContext } from 'context/AppContextProvider';
 import { Coin } from 'models/models';
 import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
-import Spinner from 'components/spinner.component';
 
 interface Props {
   item: Coin,
@@ -33,16 +32,13 @@ const CoinOverview: React.FC<Props> = ({ item, topSection }: Props) => {
           topSection ? null : <Text style={styles.coinSymbol}>{Symbol}</Text>
         }
         <Text style={styles.coinName}>{CoinName}</Text>
-        {
-          ImageUrl ? <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
-                    : <Spinner />
-        }
+        <Image source={{uri: `http://cryptocompare.com/${ImageUrl}`}} style={styles.image} />
       </View>
     </TouchableOpacity>
   );
 };
 
-const sharedStyles = {
+export const sharedStyles = {
   flex: 1,
   margin: 7,
   paddingTop: 5,

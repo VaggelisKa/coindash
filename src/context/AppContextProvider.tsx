@@ -109,7 +109,6 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     let pricesArr = await pricesAsync(favorites);
     pricesArr = pricesArr.filter(price => Object.keys(price).length);
     setPrices(pricesArr);
-    console.log(pricesArr);
 
     setLoading(false);
   };

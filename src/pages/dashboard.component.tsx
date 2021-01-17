@@ -19,7 +19,11 @@ const Dashboard: React.FC = () => {
         Hi, you currently have no favorite coins to monitor.
         Go to favourites tab where you can add some!
       </Text>
-      : loading ? <Spinner /> : <CoinPriceOverview />
+      : loading ? <Spinner /> : (
+      <>
+        <CoinPriceOverview />
+      </>
+      )
   );
 };
 
@@ -30,7 +34,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     fontSize: 20,
     color: '#fff'
-  }
+  },
 });
 
 export default Dashboard;

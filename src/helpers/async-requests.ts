@@ -14,7 +14,6 @@ export const pricesAsync = async (favorites: Coin[]) => {
     }
   }
 
-  console.log(pricesData);
   return pricesData;
 };
 
