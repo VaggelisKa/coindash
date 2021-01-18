@@ -8,7 +8,7 @@ interface Props {
   itemData: PriceData
 }
 
-const numberFormat = (number: number) => +(number.toString()).slice(0, 5);
+const numberFormat = (number: number): number => +(number.toString()).slice(0, 5);
 
 const CoinPriceTile: React.FC<Props> = ({ itemData }: Props) => {
   const { selectFavoriteCoin, favorites } = useContext(AppContext);

@@ -1,4 +1,5 @@
 import CoinPriceOverview from 'components/coin-price-overview.component';
+import CoinSpotlight from 'components/coin-spotlight.component';
 import Spinner from 'components/spinner.component';
 import { AppContext } from 'context/AppContextProvider';
 import React, { useContext, useEffect } from 'react';
@@ -30,6 +31,7 @@ const Dashboard: React.FC = () => {
       : loading ? <Spinner /> : (
       <>
         <CoinPriceOverview />
+        <CoinSpotlight />
       </>
       )
   );

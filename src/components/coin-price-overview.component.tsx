@@ -29,11 +29,13 @@ const CoinPriceOverview: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
+    marginTop: 25,
   },
   dividerWrapper: {
     flex: 1,
-    flexGrow: 2.5
+    flexGrow: 1.3,
+    marginTop: 13,
+    marginBottom: -190
   },
   divider: {
     backgroundColor: '#f7941b',
