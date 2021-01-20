@@ -3,7 +3,7 @@ import CoinSpotlight from 'components/coin-spotlight.component';
 import Spinner from 'components/spinner.component';
 import { AppContext } from 'context/AppContextProvider';
 import React, { useContext, useEffect } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 const Dashboard: React.FC = () => {
   const {
@@ -29,10 +29,10 @@ const Dashboard: React.FC = () => {
         Go to favourites tab where you can add some!
       </Text>
       : loading ? <Spinner /> : (
-      <>
+      <View style={styles.lowerContainer}>
         <CoinPriceOverview />
         <CoinSpotlight />
-      </>
+      </View>
       )
   );
 };
@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff'
   },
+  lowerContainer: {
+    flex: 2,
+  }
 });
 
 export default Dashboard;
