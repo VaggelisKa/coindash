@@ -6,7 +6,7 @@ const ChartComponent = () => {
   return (
     <LineChart
       data={{
-        labels: ['mon', 'tue', 'wed', 'wen', 'fri', 'sat', 'sun'],
+        labels: ['mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun'],
         datasets: [
           {
             data: [
@@ -23,26 +23,12 @@ const ChartComponent = () => {
       }}
       width={Dimensions.get('window').width - 25}
       height={330}
+      fromZero
+      segments={7}
+      onDataPointClick={({ index }) => console.log(index)}
       yAxisLabel="€"
       yAxisSuffix="k"
-      yAxisInterval={1}
-      chartConfig={{
-        backgroundColor: 'rgba(247, 148, 27, 1)',
-        backgroundGradientFrom: '#06225a',
-        backgroundGradientTo: '#06225a',
-        decimalPlaces: 1,
-        color: () => `rgba(247, 148, 27, 1)`,
-        labelColor: () => `#fff`,
-        style: {
-          borderRadius: 16,
-        },
-        propsForDots: {
-          r: '6',
-          strokeWidth: '2',
-          stroke: '#ffa726'
-        }
-      }}
-      bezier
+      chartConfig={chartConfiguration}
       style={{
         marginVertical: 8,
         borderRadius: 16,
@@ -50,6 +36,23 @@ const ChartComponent = () => {
       }}
     />
   );
+};
+
+const chartConfiguration = {
+  backgroundColor: 'rgba(247, 148, 27, 1)',
+  backgroundGradientFrom: '#06225a',
+  backgroundGradientTo: '#06225a',
+  decimalPlaces: 2,
+  color: () => `rgba(247, 148, 27, 1)`,
+  labelColor: () => `#fff`,
+  style: {
+    borderRadius: 16,
+  },
+  propsForDots: {
+    r: '6',
+    strokeWidth: '2',
+    stroke: '#ffa726'
+  }
 };
 
 export default ChartComponent;
