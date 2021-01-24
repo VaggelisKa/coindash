@@ -11,7 +11,9 @@ const Dashboard: React.FC = () => {
     favorites,
     getPrices,
     loading,
-    selectedFavorite
+    selectedFavorite,
+    historicalData,
+    getHistoricalData,
   } = useContext(AppContext);
 
   const { firstVisit } = savedSettings;
@@ -20,7 +22,12 @@ const Dashboard: React.FC = () => {
     getPrices(favorites);
   }, []);
 
-  console.log(selectedFavorite);
+  useEffect(() => {
+    getHistoricalData();
+  }, [selectedFavorite]);
+
+  console.log(historicalData);
+
   return (
     firstVisit || favorites.length <= 0
       ?

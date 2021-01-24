@@ -1,33 +1,26 @@
-import React from 'react';
+import { AppContext } from 'context/AppContextProvider';
+import React, { useContext } from 'react';
 import { Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 const ChartComponent = () => {
+  const { historicalData } = useContext(AppContext);
+
   return (
     <LineChart
       data={{
-        labels: ['mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun'],
+        labels: ['6d', '5d', '4d', '3d', '2d', '1d', 'today'],
         datasets: [
           {
-            data: [
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-            ],
+            data: historicalData,
           }
         ]
       }}
       width={Dimensions.get('window').width - 25}
       height={330}
-      fromZero
-      segments={7}
       onDataPointClick={({ index }) => console.log(index)}
       yAxisLabel="€"
-      yAxisSuffix="k"
+      bezier
       chartConfig={chartConfiguration}
       style={{
         marginVertical: 8,

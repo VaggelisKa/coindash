@@ -2,7 +2,7 @@ import { Coin, Prices } from 'models/models';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 import _ from 'lodash';
-import { pricesAsync } from 'helpers/async-requests';
+import { historicalDataAsync, pricesAsync } from 'helpers/async-requests';
 
 interface Props {
   children?: React.ReactChild | React.ReactChild[]
@@ -16,6 +16,7 @@ type RemoveFavoriteCoin = (coin: Coin) => void;
 type CoinsFromSearch = (coins: {[id: string]: Coin}) => void;
 type GetPrices = (favorites: Coin[]) => void
 type SelectFavoriteCoin = (coin: Coin) => void
+type GetHistoricalData = () => void;
 
 interface AppContextValues {
   savedSettings: { settings: Coin[], firstVisit: boolean }
@@ -24,7 +25,8 @@ interface AppContextValues {
   favorites: Coin[],
   selectedFavorite: Coin | null,
   filteredCoins: {[id: string]: Coin},
-  prices: Prices[]
+  prices: Prices[],
+  historicalData: any[]
 
   confirmSettings: ConfirmSettings
   setCoins: SetCoins
@@ -33,7 +35,8 @@ interface AppContextValues {
   removeFavoriteCoin: RemoveFavoriteCoin
   coinsFromSearch: CoinsFromSearch
   getPrices: GetPrices,
-  selectFavoriteCoin: SelectFavoriteCoin
+  selectFavoriteCoin: SelectFavoriteCoin,
+  getHistoricalData: GetHistoricalData
 }
 
 const initialState: AppContextValues = {
@@ -44,6 +47,7 @@ const initialState: AppContextValues = {
   selectedFavorite: null,
   filteredCoins: {},
   prices: [],
+  historicalData: [],
 
   confirmSettings: () => {},
   setCoins: () => {},
@@ -52,7 +56,8 @@ const initialState: AppContextValues = {
   removeFavoriteCoin: () => {},
   coinsFromSearch: () => {},
   getPrices: async () => {},
-  selectFavoriteCoin: () => {}
+  selectFavoriteCoin: () => {},
+  getHistoricalData: async () => {}
 };
 
 export const AppContext = createContext<AppContextValues>(initialState);
@@ -65,6 +70,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [filteredCoins, setFilteredCoins] = useState<{[id: string]: Coin}>({});
   const [prices, setPrices] = useState<Prices[]>([]);
   const [selectedFavorite, setSelectedfavorite] = useState<Coin | null>(favorites[0]);
+  const [historicalData, setHistoricalData] = useState<any[]>([]);
 
   useEffect(() => {
     const coindashData = JSON.parse(localStorage.getItem('coindash') as string);
@@ -120,6 +126,22 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     setLoading(false);
   };
 
+  const getHistoricalData: GetHistoricalData = async () => {
+    setLoading(true);
+
+    const data = await historicalDataAsync(selectedFavorite);
+    if (data) {
+      const formattedData = [];
+      for (let i = 0; i < data.length; i++) {
+        formattedData.push(Object.values(data[i]));
+      }
+
+      setHistoricalData(formattedData.flatMap(value => value));
+    }
+
+    setLoading(false);
+  };
+
 
   const confirmSettings: ConfirmSettings = () => {
     localStorage.setItem('coindash', JSON.stringify([...favorites]));
@@ -141,6 +163,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         filteredCoins,
         prices,
         selectedFavorite,
+        historicalData,
         confirmSettings,
         setCoins,
         setIsLoading,
@@ -148,7 +171,8 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         removeFavoriteCoin,
         coinsFromSearch,
         getPrices,
-        selectFavoriteCoin
+        selectFavoriteCoin,
+        getHistoricalData
       }}
     >
       {children}

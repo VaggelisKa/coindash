@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Coin } from 'models/models';
 
 const cc = require('cryptocompare');
@@ -15,6 +16,24 @@ export const pricesAsync = async (favorites: Coin[]) => {
   }
 
   return pricesData;
+};
+
+export const historicalDataAsync = async (selectedFavorite: Coin | null) => {
+  try {
+    const priceHistory: [{[id: string]: {EUR: number}}] = [{}];
+    for (let i = 7; i > 0; i--) {
+      priceHistory.push(
+          cc.priceHistorical(
+              selectedFavorite?.Symbol,
+              ['EUR'],
+              dayjs().subtract(i, 'days').toDate()
+          )
+      );
+    }
+    return Promise.all(priceHistory.slice(1, 8));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 
