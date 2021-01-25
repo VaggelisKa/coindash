@@ -6,6 +6,13 @@ import { LineChart } from 'react-native-chart-kit';
 const ChartComponent = () => {
   const { historicalData } = useContext(AppContext);
 
+  const formatValue = (value: number): string => {
+    if (value < 10) {
+      return value.toString();
+    }
+    return value.toFixed(0);
+  };
+
   return (
     <LineChart
       data={{
@@ -18,6 +25,7 @@ const ChartComponent = () => {
       }}
       width={Dimensions.get('window').width - 25}
       height={330}
+      formatYLabel={(yValue) => formatValue(+yValue)}
       onDataPointClick={({ index }) => console.log(index)}
       yAxisLabel="€"
       chartConfig={chartConfiguration}
@@ -34,7 +42,7 @@ const chartConfiguration = {
   backgroundColor: 'rgba(247, 148, 27, 1)',
   backgroundGradientFrom: '#06225a',
   backgroundGradientTo: '#06225a',
-  decimalPlaces: 2,
+  decimalPlaces: 5,
   color: () => `rgba(247, 148, 27, 1)`,
   labelColor: () => `#fff`,
   style: {
