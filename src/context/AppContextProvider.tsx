@@ -90,10 +90,6 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    setSelectedfavorite(favorites[0]);
-  }, []);
-
   const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList]);
   const setIsLoading: SetIsLoading = (isLoading: boolean) => setLoading(isLoading);
 

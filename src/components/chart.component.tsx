@@ -20,7 +20,6 @@ const ChartComponent = () => {
       height={330}
       onDataPointClick={({ index }) => console.log(index)}
       yAxisLabel="€"
-      bezier
       chartConfig={chartConfiguration}
       style={{
         marginVertical: 8,
