@@ -92,7 +92,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
 
   useEffect(() => {
     setSelectedfavorite(favorites[0]);
-  }, [favorites]);
+  }, []);
 
   const setCoins = useCallback((coins: {[id: string]: Coin}) => setCoinList(coins), [coinList]);
   const setIsLoading: SetIsLoading = (isLoading: boolean) => setLoading(isLoading);
@@ -136,6 +136,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
         formattedData.push(Object.values(data[i]));
       }
 
+      console.log(formattedData.flatMap(value => value));
       setHistoricalData(formattedData.flatMap(value => value));
     }
 
@@ -150,6 +151,7 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
       firstVisit: false
     }, () => {
       getPrices(favorites);
+      setSelectedfavorite(favorites[0]);
     });
   };
 

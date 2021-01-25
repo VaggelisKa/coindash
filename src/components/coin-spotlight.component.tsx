@@ -6,7 +6,7 @@ import { AppContext } from 'context/AppContextProvider';
 import ChartComponent from './chart.component';
 
 const CoinSpotlight: React.FC = () => {
-  const { selectedFavorite} = useContext(AppContext);
+  const { selectedFavorite } = useContext(AppContext);
 
 
   return (

@@ -22,6 +22,16 @@ export const historicalDataAsync = async (selectedFavorite: Coin | null) => {
   try {
     const priceHistory: [{[id: string]: {EUR: number}}] = [{}];
     for (let i = 7; i > 0; i--) {
+      if (i == 1) {
+        priceHistory.push(
+            cc.priceHistorical(
+                selectedFavorite?.Symbol,
+                ['EUR'],
+                dayjs().toDate()
+            )
+        );
+        break;
+      }
       priceHistory.push(
           cc.priceHistorical(
               selectedFavorite?.Symbol,
