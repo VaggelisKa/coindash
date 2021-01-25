@@ -5,19 +5,24 @@ import { NavigationProp } from '@react-navigation/native';
 
 interface Props {
   navigation: NavigationProp<any>
+  title: string,
+  runConfirm: boolean,
+  navigateTo: string
 }
 
-const ConfirmButton: React.FC<Props> = ({ navigation }: Props) => {
+const ConfirmButton: React.FC<Props> = ({ navigation, title, runConfirm, navigateTo }: Props) => {
   const { confirmSettings } = useContext(AppContext);
 
   return (
-    <View style={styles.viewStyles}>
+    <View style={runConfirm ? styles.viewStyles : styles.viewStylesWelcomePage}>
       <Button
-        title="Confirm Favorites"
+        title={title}
         color="#f7941b"
         onPress={() => {
-          confirmSettings();
-          navigation.navigate('Dashboard');
+          if (runConfirm) {
+            confirmSettings();
+          }
+          navigation.navigate(navigateTo);
         }}
       />
     </View>
@@ -31,6 +36,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
+    paddingBottom: 190
+  },
+  viewStylesWelcomePage: {
+    flex: 1,
+    paddingTop: 15,
+    marginHorizontal: 100,
+    alignItems: 'center',
     paddingBottom: 190
   },
   buttonStyles: {

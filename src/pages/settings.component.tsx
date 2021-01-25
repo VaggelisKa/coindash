@@ -8,7 +8,12 @@ const Settings: React.FC = (props: any) => {
   return (
     <View style={styles.viewStyles}>
       <CoinsOverview topSection={true} />
-      <ConfirmButton {...props} />
+      <ConfirmButton
+        title='Confirm Favorites'
+        navigateTo='Dashboard'
+        runConfirm
+        {...props}
+      />
       <CoinsOverview topSection={false} />
     </View>
   );
