@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import { ButtonGroup } from 'react-native-elements';
 
 import { sharedStyles } from 'components/coin-overview.component';
 import { AppContext } from 'context/AppContextProvider';
@@ -16,6 +17,13 @@ const CoinSpotlight: React.FC = () => {
       <View style={styles.chartWrapper}>
         <ChartComponent />
       </View>
+      <ButtonGroup
+        onPress={() => console.log('hi')}
+        buttons={['1Y', '6M', '1W']}
+        containerStyle={styles.buttonGroup}
+        buttonStyle={{backgroundColor: 'orange'}}
+        textStyle={{color: '#fff'}}
+      />
     </View>
   );
 };
@@ -46,6 +54,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  buttonGroup: {
+    height: 20,
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    width: 110,
+    marginLeft: 5,
+    padding: 0,
+  }
 });
 
 export default CoinSpotlight;
