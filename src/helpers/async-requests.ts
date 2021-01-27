@@ -18,10 +18,20 @@ export const pricesAsync = async (favorites: Coin[]) => {
   return pricesData;
 };
 
-export const historicalDataAsync = async (selectedFavorite: Coin | null) => {
+export const historicalDataAsync = async (selectedFavorite: Coin | null, selectedIndex?: number) => {
   try {
     const priceHistory: [{[id: string]: {EUR: number}}] = [{}];
-    for (let i = 7; i > 0; i--) {
+    let repetitions: number = 0;
+
+    if (selectedIndex === 0) {
+      repetitions = 12;
+    } else if (selectedIndex === 1) {
+      repetitions = 6;
+    } else {
+      repetitions = 7;
+    }
+
+    for (let i = repetitions; i > 0; i--) {
       if (i == 1) {
         priceHistory.push(
             cc.priceHistorical(
@@ -36,11 +46,13 @@ export const historicalDataAsync = async (selectedFavorite: Coin | null) => {
           cc.priceHistorical(
               selectedFavorite?.Symbol,
               ['EUR'],
-              dayjs().subtract(i, 'days').toDate()
+              dayjs().subtract(i, repetitions === 7 ? 'days' : 'months').toDate()
           )
       );
     }
-    return Promise.all(priceHistory.slice(1, 8));
+    priceHistory.slice(1, repetitions + 1);
+
+    return Promise.all(priceHistory);
   } catch (error) {
     console.log(error);
   }

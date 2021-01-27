@@ -13,10 +13,36 @@ const ChartComponent = () => {
     return value.toFixed(0);
   };
 
+  const labelFormat = (): string[] => {
+    const labelArr: string[] = [];
+
+    if (historicalData.length === 7) {
+      for (let i = 7; i > 0; i--) {
+        if (i == 1) {
+          labelArr.push('Today');
+          break;
+        }
+        const label = `${i}d`;
+        labelArr.push(label);
+      }
+    } else {
+      for (let i = historicalData.length; i > 0; i--) {
+        if (i == 1) {
+          labelArr.push('Tod');
+          break;
+        }
+        const label = `${i}m`;
+        labelArr.push(label);
+      }
+    }
+
+    return labelArr;
+  };
+
   return (
     <LineChart
       data={{
-        labels: ['6d', '5d', '4d', '3d', '2d', '1d', 'today'],
+        labels: labelFormat(),
         datasets: [
           {
             data: historicalData,

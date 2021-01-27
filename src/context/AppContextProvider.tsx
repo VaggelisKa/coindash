@@ -16,7 +16,7 @@ type RemoveFavoriteCoin = (coin: Coin) => void;
 type CoinsFromSearch = (coins: {[id: string]: Coin}) => void;
 type GetPrices = (favorites: Coin[]) => void
 type SelectFavoriteCoin = (coin: Coin) => void
-type GetHistoricalData = () => void;
+type GetHistoricalData = (selectedIndex?: number) => void;
 
 interface AppContextValues {
   savedSettings: { settings: Coin[], firstVisit: boolean }
@@ -122,10 +122,10 @@ const AppContextProvider: React.FC<Props> = ({ children }: Props) => {
     setLoading(false);
   };
 
-  const getHistoricalData: GetHistoricalData = async () => {
+  const getHistoricalData: GetHistoricalData = async (selectedIndex?: number) => {
     setLoading(true);
 
-    const data = await historicalDataAsync(selectedFavorite);
+    const data = await historicalDataAsync(selectedFavorite, selectedIndex);
     if (data) {
       const formattedData = [];
       for (let i = 0; i < data.length; i++) {

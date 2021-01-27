@@ -7,7 +7,7 @@ import { AppContext } from 'context/AppContextProvider';
 import ChartComponent from './chart.component';
 
 const CoinSpotlight: React.FC = () => {
-  const { selectedFavorite } = useContext(AppContext);
+  const { selectedFavorite, getHistoricalData } = useContext(AppContext);
 
 
   return (
@@ -18,7 +18,7 @@ const CoinSpotlight: React.FC = () => {
         <ChartComponent />
       </View>
       <ButtonGroup
-        onPress={() => console.log('hi')}
+        onPress={(selectedIndex: number) => getHistoricalData(selectedIndex)}
         buttons={['1Y', '6M', '1W']}
         containerStyle={styles.buttonGroup}
         buttonStyle={{backgroundColor: 'orange'}}
